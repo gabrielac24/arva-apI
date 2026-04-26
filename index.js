@@ -23,98 +23,79 @@ app.get('/', (req, res) => {
   )
 })
 
-// --- ENDPOINT INTELIGENTE (EL CORAZÓN DE LA ESCALABILABILIDAD) ---
+// SUSTITUYE TU RUTA ANTERIOR POR ESTA VERSIÓN OPEN SOURCE
 app.get('/economia/:municipio', async (req, res) => {
   const municipio = req.params.municipio;
-  const db = fire.firestore();
-
+  
   try {
-    // 1. Primero intentamos ver si tenemos "Precios de Garantía" o locales en Firebase
-    const docRef = db.collection('economia_regional').doc(municipio);
-    const doc = await docRef.get();
+    // 1. Buscamos tiendas agrícolas en OpenStreetMap (Overpass API)
+    // Buscamos etiquetas "shop=agrarian" o "farm" en el municipio dado
+    const overpassQuery = `
+      [out:json];
+      area[name="${municipio}"]->.searchArea;
+      (
+        node["shop"~"agrarian|farm|hardware"](area.searchArea);
+        way["shop"~"agrarian|farm|hardware"](area.searchArea);
+      );
+      out center;
+    `;
 
-    // 2. Si el municipio NO está en tu Firebase, ¡No te detengas! 
-    // Aquí es donde harías la búsqueda automática en APIs externas.
-    if (!doc.exists) {
-      console.log(`Municipio ${municipio} no está en caché. Iniciando búsqueda automática...`);
+    // Hacemos la consulta a la API libre (Asegúrate de tener axios instalado)
+    const response = await axios.get(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(overpassQuery)}`);
+    const resultadosOSM = response.data.elements;
+
+    let compradoresReales = [];
+    let insumosReales = [];
+
+    // 2. Si OpenStreetMap encontró forrajeras reales:
+    if (resultadosOSM && resultadosOSM.length > 0) {
+      console.log(`¡Éxito! Encontramos ${resultadosOSM.length} negocios en ${municipio} vía OSM`);
       
-      // NOTA TÉCNICA: Aquí es donde conectarías con Google Places API o SNIIM.
-      // Por ahora, generamos una respuesta dinámica "inteligente" para que tu app siempre funcione.
-      const datosAutomaticos = {
-        cultivoPrincipal: "Información Regional",
-        mensaje: "Datos obtenidos mediante búsqueda dinámica",
-        insumos: [
-          { id: 1, proveedor: `Distribuidora Agrícola ${municipio}`, producto: "Urea Granulada", precio: 1100 },
-          { id: 2, proveedor: "Tienda Local", producto: "Semilla Certificada", precio: 850 }
-        ],
-        compradores: [
-          { id: 1, nombre: `Centro de Acopio ${municipio}`, ubicacion: "Cabecera Municipal", precioKilo: 22.50, cultivo: "Grano Local" }
-        ]
-      };
+      compradoresReales = resultadosOSM.slice(0, 2).map((lugar, index) => ({
+        nombre: lugar.tags.name || `Centro Agrícola (Sin nombre registrado)`,
+        ubicacion: "Zona Centro", 
+        precioKilo: 21.50, // Precio de garantía base
+        cultivo: "Insumos/Grano"
+      }));
+
+      insumosReales = resultadosOSM.slice(0, 2).map((lugar, index) => ({
+        proveedor: lugar.tags.name || `Proveedor Local ${index + 1}`,
+        producto: "Insumos Generales",
+        precio: 1100
+      }));
+    } 
+    // 3. PLAN DE RESCATE: Si OSM no tiene mapeado ese pueblito
+    else {
+      console.log(`OSM no tiene datos para ${municipio}. Usando plan de rescate dinámico.`);
       
-      return res.send(datosAutomaticos);
+      compradoresReales = [{
+        nombre: `Acopio Regional ${municipio}`,
+        ubicacion: "Cabecera Municipal",
+        precioKilo: 21.50,
+        cultivo: "Grano Local"
+      }];
+      
+      insumosReales = [{
+        proveedor: `Distribuidora Agrícola ${municipio}`,
+        producto: "Urea Granulada",
+        precio: 1100
+      },
+      {
+        proveedor: "Ferretería Local",
+        producto: "Semilla Comercial",
+        precio: 850
+      }];
     }
 
-    // 3. Si el municipio SÍ existe en tu Firebase, mandamos esos datos específicos
-    res.send(doc.data());
+    // 4. Enviamos la respuesta a tu celular
+    res.json({
+      cultivoPrincipal: "Frijol/Maíz",
+      compradores: compradoresReales,
+      insumos: insumosReales
+    });
 
   } catch (error) {
-    console.error("Error en búsqueda económica:", error);
-    res.status(500).send({ error: "No se pudo procesar la búsqueda en este momento" });
+    console.error("Error consultando Overpass API:", error);
+    res.status(500).json({ error: "Error al consultar servidores libres" });
   }
 });
-
-// --- TUS RUTAS ORIGINALES DE SENSORES (SE MANTIENEN IGUAL) ---
-
-app.get('/ver', (req, res) => {
-  const db = fire.firestore();
-  var wholeData = []
-  db.collection('Lecturas_ARVA').orderBy('fecha', 'asc').get()
-    .then(snapshot => {
-      snapshot.forEach(doc => { wholeData.push(doc.data()) });
-      res.send(wholeData)
-    })
-    .catch(error => res.status(500).send(error));
-})
-
-app.get('/valor', (req, res) => {
-  const db = fire.firestore();
-  var wholeData = []
-  db.collection('Lecturas_ARVA').limit(1).orderBy('fecha','desc').get()
-    .then(snapshot => {
-      snapshot.forEach(doc => { wholeData.push(doc.data()) });
-      res.send(wholeData)
-    })
-    .catch(error => res.status(500).send(error));
-})
-
-app.get('/grafica', (req, res) => {
-  const db = fire.firestore();
-  var wholeData = []
-  db.collection('Lecturas_ARVA').limit(10).orderBy('fecha','desc').get()
-    .then(snapshot => {
-      snapshot.forEach(doc => { wholeData.push(doc.data()) });
-      res.send(wholeData)
-    })
-    .catch(error => res.status(500).send(error));
-})
-
-app.post('/insertar', (req, res)=>{
-  const db = fire.firestore();
-  db.collection('Lecturas_ARVA').add({
-    temperatura_ambiental: req.body.temperatura_ambiental,
-    humedad_ambiental: req.body.humedad_ambiental,
-    humedad_suelo: req.body.humedad_suelo,
-    nivel_luz: req.body.nivel_luz,
-    ph_suelo: req.body.ph_suelo,
-    fecha: new Date().toJSON()
-  })
-  .then(() => {
-    res.send({ status: '¡Valores de ARVA insertados con éxito!' })
-  })
-  .catch(error => res.status(500).send(error));
-})
-
-app.listen(PORT, () => {
-  console.log(`API de ARVA escalable escuchando en el puerto ${ PORT }`)
-})

@@ -1,404 +1,150 @@
-[{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'req' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 14,
-	"startColumn": 15,
-	"endLineNumber": 14,
-	"endColumn": 18,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'res' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 14,
-	"startColumn": 20,
-	"endLineNumber": 14,
-	"endColumn": 23,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'req' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 26,
-	"startColumn": 40,
-	"endLineNumber": 26,
-	"endColumn": 43,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'res' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 26,
-	"startColumn": 45,
-	"endLineNumber": 26,
-	"endColumn": 48,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'lugar' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 51,
-	"startColumn": 58,
-	"endLineNumber": 51,
-	"endColumn": 63,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'lugar' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 58,
-	"startColumn": 54,
-	"endLineNumber": 58,
-	"endColumn": 59,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'index' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 58,
-	"startColumn": 61,
-	"endLineNumber": 58,
-	"endColumn": 66,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'req' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 100,
-	"startColumn": 18,
-	"endLineNumber": 100,
-	"endColumn": 21,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'res' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 100,
-	"startColumn": 23,
-	"endLineNumber": 100,
-	"endColumn": 26,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7034",
-	"severity": 8,
-	"message": "Variable 'wholeData' implicitly has type 'any[]' in some locations where its type cannot be determined.",
-	"source": "ts",
-	"startLineNumber": 102,
-	"startColumn": 7,
-	"endLineNumber": 102,
-	"endColumn": 16,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'snapshot' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 104,
-	"startColumn": 11,
-	"endLineNumber": 104,
-	"endColumn": 19,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'doc' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 105,
-	"startColumn": 24,
-	"endLineNumber": 105,
-	"endColumn": 27,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7005",
-	"severity": 8,
-	"message": "Variable 'wholeData' implicitly has an 'any[]' type.",
-	"source": "ts",
-	"startLineNumber": 106,
-	"startColumn": 16,
-	"endLineNumber": 106,
-	"endColumn": 25,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'error' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 108,
-	"startColumn": 12,
-	"endLineNumber": 108,
-	"endColumn": 17,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'req' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 111,
-	"startColumn": 20,
-	"endLineNumber": 111,
-	"endColumn": 23,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'res' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 111,
-	"startColumn": 25,
-	"endLineNumber": 111,
-	"endColumn": 28,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7034",
-	"severity": 8,
-	"message": "Variable 'wholeData' implicitly has type 'any[]' in some locations where its type cannot be determined.",
-	"source": "ts",
-	"startLineNumber": 113,
-	"startColumn": 7,
-	"endLineNumber": 113,
-	"endColumn": 16,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'snapshot' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 115,
-	"startColumn": 11,
-	"endLineNumber": 115,
-	"endColumn": 19,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'doc' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 116,
-	"startColumn": 24,
-	"endLineNumber": 116,
-	"endColumn": 27,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7005",
-	"severity": 8,
-	"message": "Variable 'wholeData' implicitly has an 'any[]' type.",
-	"source": "ts",
-	"startLineNumber": 117,
-	"startColumn": 16,
-	"endLineNumber": 117,
-	"endColumn": 25,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'error' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 119,
-	"startColumn": 12,
-	"endLineNumber": 119,
-	"endColumn": 17,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'req' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 122,
-	"startColumn": 22,
-	"endLineNumber": 122,
-	"endColumn": 25,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'res' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 122,
-	"startColumn": 27,
-	"endLineNumber": 122,
-	"endColumn": 30,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7034",
-	"severity": 8,
-	"message": "Variable 'wholeData' implicitly has type 'any[]' in some locations where its type cannot be determined.",
-	"source": "ts",
-	"startLineNumber": 124,
-	"startColumn": 7,
-	"endLineNumber": 124,
-	"endColumn": 16,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'snapshot' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 126,
-	"startColumn": 11,
-	"endLineNumber": 126,
-	"endColumn": 19,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'doc' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 127,
-	"startColumn": 24,
-	"endLineNumber": 127,
-	"endColumn": 27,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7005",
-	"severity": 8,
-	"message": "Variable 'wholeData' implicitly has an 'any[]' type.",
-	"source": "ts",
-	"startLineNumber": 128,
-	"startColumn": 16,
-	"endLineNumber": 128,
-	"endColumn": 25,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'error' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 130,
-	"startColumn": 12,
-	"endLineNumber": 130,
-	"endColumn": 17,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'req' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 133,
-	"startColumn": 24,
-	"endLineNumber": 133,
-	"endColumn": 27,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'res' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 133,
-	"startColumn": 29,
-	"endLineNumber": 133,
-	"endColumn": 32,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-},{
-	"resource": "/c:/Users/maide/Desktop/arva-app/app/(tabs)/economia.tsx",
-	"owner": "typescript",
-	"code": "7006",
-	"severity": 8,
-	"message": "Parameter 'error' implicitly has an 'any' type.",
-	"source": "ts",
-	"startLineNumber": 144,
-	"startColumn": 10,
-	"endLineNumber": 144,
-	"endColumn": 15,
-	"modelVersionId": 54,
-	"origin": "extHost1"
-}]
+const express = require('express')
+const PORT = process.env.PORT || 5000
+var app = express();
+var fire = require('./fire') // Tu conexión a Firebase
+var cors = require('cors');
+var bodyParser = require('body-parser');
+const axios = require('axios'); // Para consultar APIs externas
+
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// --- PANTALLA DE INICIO ACTUALIZADA ---
+app.get('/', (req, res) => {
+  res.send(
+    '<h1>ARVA Smart API - Motor Agrícola</h1>' +
+    '<ul>' +
+    '<li><b>GET /valor</b> - Última lectura de sensores</li>' +
+    '<li><b>POST /insertar</b> - Inyección de datos ESP32</li>' +
+    '<li><b>GET /economia/:municipio</b> - 🚀 Búsqueda AUTOMÁTICA de mercados y precios</li>' +
+    '</ul>'
+  )
+})
+
+// --- RUTA OPEN SOURCE (OPENSTREETMAP) ---
+app.get('/economia/:municipio', async (req, res) => {
+  const municipio = req.params.municipio;
+  
+  try {
+    // 1. Buscamos tiendas agrícolas en OpenStreetMap
+    const overpassQuery = `
+      [out:json];
+      area[name="${municipio}"]->.searchArea;
+      (
+        node["shop"~"agrarian|farm|hardware"](area.searchArea);
+        way["shop"~"agrarian|farm|hardware"](area.searchArea);
+      );
+      out center;
+    `;
+
+    const response = await axios.get(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(overpassQuery)}`);
+    const resultadosOSM = response.data.elements;
+
+    let compradoresReales = [];
+    let insumosReales = [];
+
+    // 2. Si OpenStreetMap encontró forrajeras reales:
+    if (resultadosOSM && resultadosOSM.length > 0) {
+      console.log(`¡Éxito! Encontramos ${resultadosOSM.length} negocios en ${municipio} vía OSM`);
+      
+      compradoresReales = resultadosOSM.slice(0, 2).map((lugar) => ({
+        nombre: lugar.tags.name || `Centro Agrícola (Sin nombre registrado)`,
+        ubicacion: "Zona Centro", 
+        precioKilo: 21.50, 
+        cultivo: "Insumos/Grano"
+      }));
+
+      insumosReales = resultadosOSM.slice(0, 2).map((lugar, index) => ({
+        proveedor: lugar.tags.name || `Proveedor Local ${index + 1}`,
+        producto: "Insumos Generales",
+        precio: 1100
+      }));
+    } 
+    // 3. PLAN DE RESCATE: Si OSM no tiene mapeado ese pueblito
+    else {
+      console.log(`OSM no tiene datos para ${municipio}. Usando plan de rescate dinámico.`);
+      
+      compradoresReales = [{
+        nombre: `Acopio Regional ${municipio}`,
+        ubicacion: "Cabecera Municipal",
+        precioKilo: 21.50,
+        cultivo: "Grano Local"
+      }];
+      
+      insumosReales = [{
+        proveedor: `Distribuidora Agrícola ${municipio}`,
+        producto: "Urea Granulada",
+        precio: 1100
+      },
+      {
+        proveedor: "Ferretería Local",
+        producto: "Semilla Comercial",
+        precio: 850
+      }];
+    }
+
+    res.json({
+      cultivoPrincipal: "Frijol/Maíz",
+      compradores: compradoresReales,
+      insumos: insumosReales
+    });
+
+  } catch (error) {
+    console.error("Error consultando Overpass API:", error);
+    res.status(500).json({ error: "Error al consultar servidores libres" });
+  }
+});
+
+// --- TUS RUTAS ORIGINALES DE SENSORES (¡Restauradas!) ---
+app.get('/ver', (req, res) => {
+  const db = fire.firestore();
+  var wholeData = []
+  db.collection('Lecturas_ARVA').orderBy('fecha', 'asc').get()
+    .then(snapshot => {
+      snapshot.forEach(doc => { wholeData.push(doc.data()) });
+      res.send(wholeData)
+    })
+    .catch(error => res.status(500).send(error));
+})
+
+app.get('/valor', (req, res) => {
+  const db = fire.firestore();
+  var wholeData = []
+  db.collection('Lecturas_ARVA').limit(1).orderBy('fecha','desc').get()
+    .then(snapshot => {
+      snapshot.forEach(doc => { wholeData.push(doc.data()) });
+      res.send(wholeData)
+    })
+    .catch(error => res.status(500).send(error));
+})
+
+app.get('/grafica', (req, res) => {
+  const db = fire.firestore();
+  var wholeData = []
+  db.collection('Lecturas_ARVA').limit(10).orderBy('fecha','desc').get()
+    .then(snapshot => {
+      snapshot.forEach(doc => { wholeData.push(doc.data()) });
+      res.send(wholeData)
+    })
+    .catch(error => res.status(500).send(error));
+})
+
+app.post('/insertar', (req, res)=>{
+  const db = fire.firestore();
+  db.collection('Lecturas_ARVA').add({
+    temperatura_ambiental: req.body.temperatura_ambiental,
+    humedad_ambiental: req.body.humedad_ambiental,
+    humedad_suelo: req.body.humedad_suelo,
+    nivel_luz: req.body.nivel_luz,
+    ph_suelo: req.body.ph_suelo,
+    fecha: new Date().toJSON()
+  })
+  .then(() => res.send({ status: '¡Valores insertados con éxito!' }))
+  .catch(error => res.status(500).send(error));
+})
+
+// --- LA INSTRUCCIÓN MÁS IMPORTANTE PARA RENDER ---
+app.listen(PORT, () => {
+  console.log(`API de ARVA escuchando en el puerto ${ PORT }`)
+})

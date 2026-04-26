@@ -99,3 +99,5 @@ app.get('/economia/:municipio', async (req, res) => {
     res.status(500).json({ error: "Error al consultar servidores libres" });
   }
 });
+
+//

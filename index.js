@@ -50,12 +50,12 @@ app.get('/economia/:municipio', async (req, res) => {
   const municipio = req.params.municipio;
   
   try {
-    // 🚀 BÚSQUEDA AGRESIVA (Minería de Texto): Busca palabras mexicanas en todo el mapa de ese municipio
+    // 🚀 BÚSQUEDA AGRESIVA (Sintaxis nativa de Overpass QL)
     const overpassQuery = `
-      [out:json];
-      area[name="${municipio}"]->.searchArea;
+      [out:json][timeout:25];
+      area["name"="${municipio}"]->.searchArea;
       (
-        nwr["name"~"(?i)(acopio|frijol|grano|forraje|fertilizante|agroquimico|semilla|agricola|agro)"](area.searchArea);
+        nwr["name"~"acopio|frijol|grano|forraje|fertilizante|agroquimico|semilla|agricola|agro", i](area.searchArea);
         nwr["shop"~"agrarian|farm"](area.searchArea);
       );
       out center;

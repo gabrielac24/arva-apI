@@ -4,7 +4,12 @@ var app = express();
 var fire = require('./fire') // Tu conexión a Firebase
 var cors = require('cors');
 var bodyParser = require('body-parser');
-const axios = require('axios'); // Para consultar APIs externas
+// Reemplaza tu línea de axios actual con esta versión que incluye los headers:
+const response = await axios.get(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(overpassQuery)}`, {
+  headers: {
+    'User-Agent': 'ARVA-Smart-App/1.0 (Proyecto_Universitario)' 
+  }
+});
 
 app.use(cors());
 app.use(bodyParser.json());

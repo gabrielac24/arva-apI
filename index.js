@@ -17,10 +17,32 @@ app.get('/', (req, res) => {
     '<ul>' +
     '<li><b>GET /valor</b> - Última lectura de sensores</li>' +
     '<li><b>POST /insertar</b> - Inyección de datos ESP32</li>' +
-    '<li><b>GET /economia/:municipio</b> - 🚀 Búsqueda AUTOMÁTICA de mercados y precios</li>' +
+    '<li><b>GET /economia/:municipio</b> - Búsqueda AUTOMÁTICA de mercados y precios</li>' +
     '</ul>'
   )
 })
+// --- NUEVAS RUTAS: INVENTARIO DE PARCELAS EN LA NUBE ---
+app.post('/parcelas', (req, res) => {
+  const db = fire.firestore();
+  // Se crea una nueva tabla/colección en Firebase llamada "Parcelas_ARVA"
+  db.collection('Parcelas_ARVA').add(req.body)
+    .then(() => res.send({ status: '¡Parcela guardada en la nube!' }))
+    .catch(error => res.status(500).send(error));
+});
+
+app.get('/parcelas', (req, res) => {
+  const db = fire.firestore();
+  var parcelas = [];
+  db.collection('Parcelas_ARVA').get()
+    .then(snapshot => {
+      snapshot.forEach(doc => { 
+        // Extraemos el ID único de Firebase y los datos
+        parcelas.push({ id: doc.id, ...doc.data() }); 
+      });
+      res.send(parcelas);
+    })
+    .catch(error => res.status(500).send(error));
+});
 
 // --- RUTA OPEN SOURCE (OPENSTREETMAP) ---
 app.get('/economia/:municipio', async (req, res) => {

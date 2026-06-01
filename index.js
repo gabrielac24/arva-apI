@@ -4,12 +4,7 @@ var app = express();
 var fire = require('./fire') // Tu conexión a Firebase
 var cors = require('cors');
 var bodyParser = require('body-parser');
-// Reemplaza tu línea de axios actual con esta versión que incluye los headers:
-const response = await axios.get(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(overpassQuery)}`, {
-  headers: {
-    'User-Agent': 'ARVA-Smart-App/1.0 (Proyecto_Universitario)' 
-  }
-});
+const axios = require('axios'); // <-- IMPORTANTE: Faltaba importar la librería aquí
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -26,6 +21,7 @@ app.get('/', (req, res) => {
     '</ul>'
   )
 })
+
 // --- NUEVAS RUTAS: INVENTARIO DE PARCELAS EN LA NUBE ---
 app.post('/parcelas', (req, res) => {
   const db = fire.firestore();
@@ -65,7 +61,12 @@ app.get('/economia/:municipio', async (req, res) => {
       out center;
     `;
 
-    const response = await axios.get(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(overpassQuery)}`);
+    // 🚀 AQUÍ VA EL AXIOS CON LOS HEADERS (Seguro dentro de su función async)
+    const response = await axios.get(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(overpassQuery)}`, {
+      headers: {
+        'User-Agent': 'ARVA-Smart-App/1.0 (Proyecto_Universitario)' 
+      }
+    });
     const resultadosOSM = response.data.elements;
 
     let compradoresReales = [];

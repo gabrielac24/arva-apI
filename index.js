@@ -45,6 +45,23 @@ app.get('/parcelas', (req, res) => {
     .catch(error => res.status(500).send(error));
 });
 
+// --- RUTAS CRUD PARA ACTUALIZAR Y ELIMINAR PARCELAS ---
+app.put('/parcelas/:id', (req, res) => {
+  const db = fire.firestore();
+  // Busca el documento por su ID y actualiza sus coordenadas y nombre
+  db.collection('Parcelas_ARVA').doc(req.params.id).update(req.body)
+    .then(() => res.send({ status: '¡Parcela actualizada con éxito!' }))
+    .catch(error => res.status(500).send(error));
+});
+
+app.delete('/parcelas/:id', (req, res) => {
+  const db = fire.firestore();
+  // Destruye el documento de la base de datos usando su ID
+  db.collection('Parcelas_ARVA').doc(req.params.id).delete()
+    .then(() => res.send({ status: '¡Parcela eliminada!' }))
+    .catch(error => res.status(500).send(error));
+});
+
 // --- RUTA REALITY-CHECK (BÚSQUEDA REAL EN OPENSTREETMAP) ---
 app.get('/economia/:municipio', async (req, res) => {
   const municipio = req.params.municipio;

@@ -62,61 +62,68 @@ app.delete('/parcelas/:id', (req, res) => {
     .catch(error => res.status(500).send(error));
 });
 
-// --- RUTA REALITY-CHECK (BÚSQUEDA REAL EN OPENSTREETMAP) ---
+// --- RUTA INEGI DENUE (DATOS OFICIALES DE GOBIERNO) ---
 app.get('/economia/:municipio', async (req, res) => {
-  const municipio = req.params.municipio;
-  
-  try {
-    // 🚀 BÚSQUEDA AGRESIVA (Sintaxis nativa de Overpass QL)
-    const overpassQuery = `
-      [out:json][timeout:25];
-      area["name"="${municipio}"]->.searchArea;
-      (
-        nwr["name"~"acopio|frijol|grano|forraje|fertilizante|agroquimico|semilla|agricola|agro", i](area.searchArea);
-        nwr["shop"~"agrarian|farm"](area.searchArea);
-      );
-      out center;
-    `;
+  const municipio = req.params.municipio.trim().toLowerCase();
+  const tokenInegi = process.env.INEGI_TOKEN;
 
-    const response = await axios.get(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(overpassQuery)}`, {
-      headers: { 'User-Agent': 'ARVA-Smart-App/1.0' }
+  if (!tokenInegi) {
+    return res.status(500).json({ error: "Falta configurar el Token de INEGI en el servidor." });
+  }
+
+  // 1. Diccionario de Coordenadas (Centro del municipio)
+  // Puedes agregar más municipios aquí después
+  const coordenadasMap = {
+    'guadalupe victoria': { lat: 24.4485, lon: -104.1242 },
+    'durango': { lat: 24.0277, lon: -104.6538 },
+    'cuencame': { lat: 24.8694, lon: -103.6963 }
+  };
+
+  const ubicacion = coordenadasMap[municipio];
+
+  if (!ubicacion) {
+    return res.json({
+      cultivoPrincipal: "Desconocido",
+      compradores: [], insumos: [],
+      nota: "Municipio no mapeado en el servidor. Agrega sus coordenadas."
     });
+  }
+
+  try {
+    // 2. Búsqueda paralela al INEGI (Radio de 15km = 15000 metros)
+    // Buscamos acopios/granos y fertilizantes al mismo tiempo para que sea rápido
+    const radio = 15000; 
     
-    const resultadosOSM = response.data.elements;
+    const urlCompradores = `https://www.inegi.org.mx/app/api/denue/v1/consulta/Buscar/grano/${ubicacion.lat},${ubicacion.lon}/${radio}/${tokenInegi}`;
+    const urlInsumos = `https://www.inegi.org.mx/app/api/denue/v1/consulta/Buscar/fertilizante/${ubicacion.lat},${ubicacion.lon}/${radio}/${tokenInegi}`;
+
+    const [respCompradores, respInsumos] = await Promise.all([
+      axios.get(urlCompradores),
+      axios.get(urlInsumos)
+    ]);
 
     let compradoresReales = [];
     let insumosReales = [];
 
-    // SI ENCUENTRA NEGOCIOS REALES EN EL MAPA, LOS CLASIFICA
-    if (resultadosOSM && resultadosOSM.length > 0) {
-      console.log(`¡Éxito! Encontramos ${resultadosOSM.length} negocios reales en ${municipio}`);
-
-      resultadosOSM.forEach((lugar) => {
-        const nombre = lugar.tags.name || "Negocio Agrícola";
-        const nombreLower = nombre.toLowerCase();
-
-        // 1. ¿Es comprador o acopio?
-        if (nombreLower.includes('acopio') || nombreLower.includes('grano') || nombreLower.includes('frijol')) {
-          compradoresReales.push({
-            nombre: nombre,
-            ubicacion: "Ubicación en Mapa", // OSM a veces no trae la calle exacta
-            precioKilo: 21.50, // Este es el precio actual base del mercado
-            cultivo: "Frijol/Grano"
-          });
-        } 
-        // 2. Si no es comprador, asumimos que vende insumos
-        else {
-          insumosReales.push({
-            proveedor: nombre,
-            // Asignamos fertilizante a los que suenan a químicos, y semilla a los demás
-            producto: nombreLower.includes('agro') || nombreLower.includes('ferti') ? "Fertilizantes / Químicos" : "Semillas y Forraje",
-            precio: 1100 // Precio promedio base
-          });
-        }
-      });
+    // 3. Procesamiento de Compradores (INEGI regresa un array de objetos o un string si no hay datos)
+    if (Array.isArray(respCompradores.data)) {
+      compradoresReales = respCompradores.data.slice(0, 5).map(negocio => ({
+        nombre: negocio.Nombre,
+        ubicacion: `${negocio.Calle}, ${negocio.Colonia}`,
+        precioKilo: 21.50, // Precio base de mercado
+        cultivo: negocio.Clase_actividad.includes('semilla') ? 'Semillas/Granos' : 'Frijol/Maíz'
+      }));
     }
 
-    // 🛑 ADIÓS SIMULACIÓN: Mandamos exactamente lo que extrajimos de la realidad
+    // 4. Procesamiento de Insumos
+    if (Array.isArray(respInsumos.data)) {
+      insumosReales = respInsumos.data.slice(0, 5).map(negocio => ({
+        proveedor: negocio.Nombre,
+        producto: negocio.Clase_actividad.includes('fertilizante') ? 'Fertilizantes y Agroquímicos' : 'Insumos Generales',
+        precio: 1100
+      }));
+    }
+
     res.json({
       cultivoPrincipal: "Frijol/Maíz",
       compradores: compradoresReales,
@@ -124,8 +131,8 @@ app.get('/economia/:municipio', async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Error consultando Overpass API:", error);
-    res.status(500).json({ error: "Error al consultar la base de datos de mapas" });
+    console.error("Error consultando INEGI:", error.message);
+    res.status(500).json({ error: "Error de comunicación con los servidores del INEGI" });
   }
 });
 

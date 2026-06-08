@@ -91,35 +91,46 @@ app.get('/economia/:municipio', async (req, res) => {
 
   try {
     // 2. Búsqueda paralela al INEGI (Radio de 15km = 15000 metros)
-    // Buscamos acopios/granos y fertilizantes al mismo tiempo para que sea rápido
     const radio = 15000; 
     
     const urlCompradores = `https://www.inegi.org.mx/app/api/denue/v1/consulta/Buscar/grano/${ubicacion.lat},${ubicacion.lon}/${radio}/${tokenInegi}`;
     const urlInsumos = `https://www.inegi.org.mx/app/api/denue/v1/consulta/Buscar/fertilizante/${ubicacion.lat},${ubicacion.lon}/${radio}/${tokenInegi}`;
 
-    const [respCompradores, respInsumos] = await Promise.all([
-      axios.get(urlCompradores),
-      axios.get(urlInsumos)
+    // 🚀 FUNCIÓN ESCUDO: Si INEGI no encuentra nada y lanza 404, regresamos un arreglo vacío sin tumbar el server
+    const consultarINEGI = async (url) => {
+      try {
+        const respuesta = await axios.get(url, { headers: { 'User-Agent': 'ARVA-Smart-App/1.0' } });
+        return respuesta.data;
+      } catch (error) {
+        console.log("INEGI no encontró resultados para esta categoría (Error 404/400). Regresando lista vacía.");
+        return []; 
+      }
+    };
+
+    // Consultamos al mismo tiempo, pero protegidos
+    const [dataCompradores, dataInsumos] = await Promise.all([
+      consultarINEGI(urlCompradores),
+      consultarINEGI(urlInsumos)
     ]);
 
     let compradoresReales = [];
     let insumosReales = [];
 
     // 3. Procesamiento de Compradores (INEGI regresa un array de objetos o un string si no hay datos)
-    if (Array.isArray(respCompradores.data)) {
-      compradoresReales = respCompradores.data.slice(0, 5).map(negocio => ({
-        nombre: negocio.Nombre,
-        ubicacion: `${negocio.Calle}, ${negocio.Colonia}`,
+    if (Array.isArray(dataCompradores)) {
+      compradoresReales = dataCompradores.slice(0, 5).map(negocio => ({
+        nombre: negocio.Nombre || "Centro de Acopio",
+        ubicacion: `${negocio.Calle || ''}, ${negocio.Colonia || ''}`.trim() || "Ubicación en cabecera",
         precioKilo: 21.50, // Precio base de mercado
-        cultivo: negocio.Clase_actividad.includes('semilla') ? 'Semillas/Granos' : 'Frijol/Maíz'
+        cultivo: (negocio.Clase_actividad && negocio.Clase_actividad.includes('semilla')) ? 'Semillas/Granos' : 'Frijol/Maíz'
       }));
     }
 
     // 4. Procesamiento de Insumos
-    if (Array.isArray(respInsumos.data)) {
-      insumosReales = respInsumos.data.slice(0, 5).map(negocio => ({
-        proveedor: negocio.Nombre,
-        producto: negocio.Clase_actividad.includes('fertilizante') ? 'Fertilizantes y Agroquímicos' : 'Insumos Generales',
+    if (Array.isArray(dataInsumos)) {
+      insumosReales = dataInsumos.slice(0, 5).map(negocio => ({
+        proveedor: negocio.Nombre || "Distribuidora Agrícola",
+        producto: (negocio.Clase_actividad && negocio.Clase_actividad.includes('fertilizante')) ? 'Fertilizantes y Agroquímicos' : 'Insumos Generales',
         precio: 1100
       }));
     }
@@ -131,8 +142,8 @@ app.get('/economia/:municipio', async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Error consultando INEGI:", error.message);
-    res.status(500).json({ error: "Error de comunicación con los servidores del INEGI" });
+    console.error("Error crítico en ruta Economía:", error.message);
+    res.status(500).json({ error: "Error interno del servidor al procesar datos del INEGI." });
   }
 });
 

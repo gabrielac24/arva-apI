@@ -146,14 +146,13 @@ app.get('/economia/:municipio', async (req, res) => {
     res.status(500).json({ error: "Error interno del servidor al procesar datos del INEGI." });
   }
 });
-// --- RUTA DEL ASISTENTE CON INTELIGENCIA ARTIFICIAL (MIGRADO A GOOGLE GEMINI) ---
+// --- RUTA DEL ASISTENTE CON GROQ (MODELO LLAMA 3 DE META) ---
 app.post('/chat', async (req, res) => {
   const { mensaje } = req.body;
-  // Ahora jalaremos la llave de Google desde el entorno seguro
-  const apiKey = process.env.GEMINI_API_KEY; 
+  const apiKey = process.env.GROQ_API_KEY;
 
   if (!apiKey) {
-    return res.status(500).json({ error: "Falta configurar la API Key de Gemini en el servidor." });
+    return res.status(500).json({ error: "Falta configurar la API Key de Groq en Render." });
   }
 
   try {
@@ -167,31 +166,33 @@ app.post('/chat', async (req, res) => {
       datosSensores = `Humedad Suelo: ${lectura.humedad_suelo}%, Temp: ${lectura.temperatura_ambiental}°C, Humedad Amb: ${lectura.humedad_ambiental}%, Luz: ${lectura.nivel_luz} Lux, pH: ${lectura.ph_suelo}.`;
     }
 
-    // 2. Construimos la orden maestra para Gemini
+    // 2. Personalidad del Asistente
     const promptDelSistema = `
       Eres el Asistente Experto Agrónomo de la plataforma ARVA. 
-      Tu objetivo es ayudar a los agricultores de forma amable, profesional y directa. No uses formatos complejos ni negritas.
+      Tu objetivo es ayudar a los agricultores de forma amable y directa. Responde SIEMPRE en español. No uses formatos de texto complejos.
       Aquí tienes los DATOS EN TIEMPO REAL de la parcela del usuario: ${datosSensores}
-      
-      Pregunta del agricultor: "${mensaje}"
-      
-      Responde de manera concisa basándote en los datos actuales.
     `;
 
-    // 3. Conexión segura a la API de Gemini
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-    
-    const respuestaIA = await axios.post(url, {
-      contents: [{ parts: [{ text: promptDelSistema }] }]
+    // 3. Conexión a la API de Groq (Estructura idéntica a OpenAI pero gratis y más rápida)
+    const respuestaIA = await axios.post('https://api.groq.com/openai/v1/chat/completions', {
+      model: "llama3-8b-8192", // Modelo Llama 3 de Meta, rapidísimo
+      messages: [
+        { role: "system", content: promptDelSistema },
+        { role: "user", content: mensaje }
+      ]
+    }, {
+      headers: { 
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      }
     });
 
-    // 4. Extraemos el texto de la respuesta de Google
-    const textoLimpiado = respuestaIA.data.candidates[0].content.parts[0].text;
-    res.json({ respuesta: textoLimpiado });
+    // 4. Mandamos la respuesta a la app
+    res.json({ respuesta: respuestaIA.data.choices[0].message.content });
 
   } catch (error) {
-    console.error("Error en el Chatbot Gemini:", error.message);
-    res.status(500).json({ error: "El asistente está descansando por alta demanda. Intenta de nuevo en unos minutos." });
+    console.error("Error crítico en Groq:", error?.response?.data || error.message);
+    res.status(500).json({ error: "No pude conectar con los satélites de análisis. Revisa tu conexión." });
   }
 });
 

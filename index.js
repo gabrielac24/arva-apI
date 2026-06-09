@@ -146,6 +146,55 @@ app.get('/economia/:municipio', async (req, res) => {
     res.status(500).json({ error: "Error interno del servidor al procesar datos del INEGI." });
   }
 });
+// --- RUTA DEL ASISTENTE CON INTELIGENCIA ARTIFICIAL ---
+app.post('/chat', async (req, res) => {
+  const { mensaje } = req.body;
+  const apiKey = process.env.OPENAI_API_KEY;
+
+  if (!apiKey) {
+    return res.status(500).json({ error: "Falta configurar la API Key de la IA en el servidor." });
+  }
+
+  try {
+    const db = fire.firestore();
+    
+    // 1. Obtenemos la última lectura de los sensores para darle contexto a la IA
+    let datosSensores = "Sin datos actuales.";
+    const snapshot = await db.collection('Lecturas_ARVA').limit(1).orderBy('fecha','desc').get();
+    if (!snapshot.empty) {
+      const lectura = snapshot.docs[0].data();
+      datosSensores = `Humedad Suelo: ${lectura.humedad_suelo}%, Temp: ${lectura.temperatura_ambiental}°C, Humedad Amb: ${lectura.humedad_ambiental}%, Luz: ${lectura.nivel_luz} Lux, pH: ${lectura.ph_suelo}.`;
+    }
+
+    // 2. Construimos la "Personalidad" y el "Contexto" de la IA
+    const promptDelSistema = `
+      Eres el Asistente Experto Agrónomo de la plataforma ARVA. 
+      Tu objetivo es ayudar a los agricultores de forma amable, profesional y directa.
+      Aquí tienes los DATOS EN TIEMPO REAL de la parcela del usuario: ${datosSensores}
+      Usa estos datos obligatoriamente si el usuario te pregunta por el estado de su cultivo, si debe regar, o si hay riesgos. No des respuestas muy largas, sé conciso.
+    `;
+
+    // 3. Nos conectamos con OpenAI
+    const respuestaIA = await axios.post('https://api.openai.com/v1/chat/completions', {
+      model: "gpt-3.5-turbo", // Es rápido y económico
+      messages: [
+        { role: "system", content: promptDelSistema },
+        { role: "user", content: mensaje }
+      ]
+    }, {
+      headers: { 
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    res.json({ respuesta: respuestaIA.data.choices[0].message.content });
+
+  } catch (error) {
+    console.error("Error en el Chatbot:", error.message);
+    res.status(500).json({ error: "El asistente está descansando. Intenta de nuevo en unos minutos." });
+  }
+});
 
 // --- TUS RUTAS ORIGINALES DE SENSORES (¡Restauradas!) ---
 app.get('/ver', (req, res) => {
